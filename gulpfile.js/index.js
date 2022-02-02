@@ -4,7 +4,7 @@ const del = require('del');
 const { task, series, parallel } = require('gulp');
 const type = require('type-detect');
 
-const scriptExt = 'js';
+const scriptExts = ['js'];
 const compressJob = 'compress';
 const copyJob = 'copy';
 const localJob = 'local';
@@ -28,6 +28,8 @@ const excludedFiles = [
   '.gitignore',
   '.editorconfig',
   '.*rc',
+  'tsconfig.json',
+  'nodemon.json',
   '.travis.yml',
   'CHANGELOG.md',
   'LICENSE-FULL',
@@ -46,8 +48,8 @@ const safeDir = (dir) =>
     ? dir
     : `/${dir}`;
 const scriptDir = (dir) => [
-  `.${safeDir(dir)}/**/*.${scriptExt}`,
-  `.${safeDir(dir)}/**/.*/**/*.${scriptExt}`,
+  ...scriptExts.map((scriptExt) => `.${safeDir(dir)}/**/*.${scriptExt}`),
+  ...scriptExts.map((scriptExt) => `.${safeDir(dir)}/**/.*/**/*.${scriptExt}`),
 ];
 const copyDir = (dir) => [
   `.${safeDir(dir)}/**`,

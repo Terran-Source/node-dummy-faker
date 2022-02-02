@@ -41,6 +41,7 @@
     "@types/node": "^17.0.14",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
+    "custom-exception": "^0.1.2",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-terser": "^2.1.0",

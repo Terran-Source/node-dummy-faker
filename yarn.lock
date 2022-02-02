@@ -709,6 +709,11 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
+custom-exception@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/custom-exception/-/custom-exception-0.1.2.tgz#9b5bf025b055e5ba85f629639c3d7f9c9033b730"
+  integrity sha512-uHEB2kLtiHCwETdTaYUM5obvf/2rcRDzQN9U7TrDnPBiYb1VVnNunB13uH3MMM09e+daDiyOPRPzOU3E2VApxA==
+
 d@1, d@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/d/-/d-1.0.1.tgz#8698095372d58dbee346ffd0c7093f99f8f9eb5a"
