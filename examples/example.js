@@ -32,7 +32,7 @@ dummy
   });
 
 (async () => {
-  //* Step III: Generate as many needed
+  //* Step III: Generate as many as needed
   const users = await dummy.generate('user', 5);
   console.info('users:', users);
 })();
