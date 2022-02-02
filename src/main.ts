@@ -83,3 +83,5 @@ export default function dummyFaker(): dummyFakerGenerator {
 
   return _init();
 }
+
+export { dummyFaker };

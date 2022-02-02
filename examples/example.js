@@ -1,7 +1,4 @@
-const DummyFaker = require('../index');
-
-const dummyFaker = DummyFaker.default;
-const DataType = DummyFaker.DataType;
+const { dummyFaker, DataType } = require('../index');
 
 const dummy = dummyFaker();
 
