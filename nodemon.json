@@ -1,0 +1,14 @@
+{
+  "ignore": [
+    ".git",
+    "lib",
+    "dist",
+    "node_modules",
+    "test"
+  ],
+  "watch": [
+    "src",
+    "examples"
+  ],
+  "ext": "ts,js,json"
+}

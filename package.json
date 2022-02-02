@@ -1,0 +1,56 @@
+{
+  "name": "dummy-faker",
+  "version": "0.1.0",
+  "description": "An extension over Faker.js to create loads of fake json objects with customized properties",
+  "main": "index.js",
+  "scripts": {
+    "refresh": "npm run clean-all && yarn install && npm run build",
+    "start": "npm run build && node .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prePublish": "npm run build && gulp preBuild",
+    "build": "npm run clean && tsc",
+    "ts": "node -r ts-node/register",
+    "local": "nodemon examples/example.ts",
+    "clean": "rm -rf lib dist yarn-error.log tsconfig.tsbuildinfo",
+    "clean-all": "rm -rf node_modules lib dist yarn.lock yarn-error.log tsconfig.tsbuildinfo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Terran-Source/node-dummy-faker.git"
+  },
+  "keywords": [
+    "nodejs",
+    "faker",
+    "dummy-faker"
+  ],
+  "contributors": [
+    {
+      "name": "Tamal Patra",
+      "email": "patra.tamal@gmail.com",
+      "url": "https://sourcerer.io/turn-a-round",
+      "contributions": 100,
+      "hireable": true
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Terran-Source/node-dummy-faker/issues"
+  },
+  "homepage": "https://github.com/Terran-Source/node-dummy-faker#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.14",
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-terser": "^2.1.0",
+    "mocha": "^9.2.0",
+    "nodemon": "^2.0.15",
+    "readable-stream": "^3.6.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^6.0.0-alpha.5"
+  }
+}
