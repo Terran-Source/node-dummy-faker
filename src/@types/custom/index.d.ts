@@ -14,3 +14,6 @@
  * Now you are free to use `RandomLength` in any of your *.ts code without
  * compilation/linting error
  **/
+
+// type Obj = { [k: string]: any };
+type Obj = Record<string, any>;

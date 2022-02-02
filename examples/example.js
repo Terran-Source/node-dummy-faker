@@ -1,4 +1,7 @@
-import dummyFaker, { DataType } from '../src/main';
+const DummyFaker = require('../index');
+
+const dummyFaker = DummyFaker.default;
+const DataType = DummyFaker.DataType;
 
 const dummy = dummyFaker();
 

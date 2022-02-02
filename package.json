@@ -11,6 +11,7 @@
     "build": "npm run clean && tsc",
     "ts": "node -r ts-node/register",
     "local": "nodemon examples/example.ts",
+    "local-js": "nodemon examples/example.js",
     "clean": "rm -rf lib dist yarn-error.log tsconfig.tsbuildinfo",
     "clean-all": "rm -rf node_modules lib dist yarn.lock yarn-error.log tsconfig.tsbuildinfo"
   },
