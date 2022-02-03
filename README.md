@@ -22,6 +22,7 @@ dummy.faker.setLocale('en_IND');
 dummy
   //* Step I: register an object property map
   .register('user', {
+    id: DataType.int,
     firstName: DataType.uuid,
     lastName: DataType.string,
     gender: DataType.string,

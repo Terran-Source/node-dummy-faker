@@ -64,7 +64,7 @@ export default function dummyFaker(): dummyFakerGenerator {
               const objFaker = _registrations[name] as ObjectFaker<T>;
               const props = objFaker.properties;
               Object.keys(props).forEach((prop: string) => {
-                const fakerCb = objFaker.generators[prop];
+                const fakerCb = objFaker.fakerCallbackFor(prop);
                 obj[prop] = fakerCb(_th.faker, obj, prop, props[prop]);
               });
               result.push(obj);

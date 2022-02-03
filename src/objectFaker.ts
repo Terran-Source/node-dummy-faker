@@ -13,12 +13,27 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
   generators: Record<string, fakerCallback> = {};
   properties: Record<string, DataType> = {};
 
+  private _defaultFaker =
+    (dataType: DataType): fakerCallback =>
+    (faker) =>
+      getDefaultFake(dataType, faker);
+
   constructor(obj: TObj) {
     this.properties = obj;
-    Object.keys(obj).forEach((property) => {
-      this.generators[property] = (faker) =>
-        getDefaultFake(obj[property], faker);
-    });
+    // Object.keys(obj).forEach((property) => {
+    //   this.properties[property] = obj[property];
+    // });
+  }
+
+  fakerCallbackFor<TKey extends keyof TObj>(
+    property: TKey,
+    dataType?: DataType
+  ) {
+    if (this.generators.hasOwnProperty(property.toString()))
+      return this.generators[property.toString()];
+    let _dataType =
+      dataType ?? this.properties[property.toString()] ?? DataType.default;
+    return this._defaultFaker(_dataType);
   }
 
   ruleFor<TKey extends keyof TObj>(
