@@ -17,7 +17,7 @@ export type dummyFakerGenerator = {
   customize: <T extends Record<string, DataType>>(
     name: string,
     callback: (objFaker: ObjectFaker<T>) => void
-  ) => void;
+  ) => dummyFakerGenerator;
   generate: <T>(name: string, count?: number) => Promise<T[]>;
 };
 
@@ -43,10 +43,11 @@ export default function dummyFaker(): dummyFakerGenerator {
     },
     customize: <T extends Record<string, DataType>>(
       name: string,
-      callback: (objFaker: ObjectFaker<T>) => void
+      callback: (objFaker: ObjectFaker<T>, customData?: any) => void
     ) => {
       if (_registrations.hasOwnProperty(name)) {
-        return callback(_registrations[name]);
+        callback(_registrations[name]);
+        return _th;
       }
       throw `${name} has not been registered. register it first`;
     },
