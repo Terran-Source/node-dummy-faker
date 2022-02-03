@@ -1,4 +1,4 @@
-import dummyFaker, { DataType } from '../src/main';
+import { dummyFaker, DataType } from '../index';
 
 const dummy = dummyFaker();
 

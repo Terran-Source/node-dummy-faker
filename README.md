@@ -10,7 +10,9 @@ $ yarn add -D dummy-faker
 ```
 Then start creating dummies
 ```js
-const { dummyFaker, DataType } = require('dummy-faker');
+import { dummyFaker, DataType } from '../index'; // Typescript commonjs import
+// or
+const { dummyFaker, DataType } = require('dummy-faker'); // Nodejs module declaration
 
 const dummy = dummyFaker();
 

@@ -2,8 +2,6 @@ import faker, { Faker } from '@faker-js/faker';
 import DataType from './helper/dataType';
 import ObjectFaker, { fakerCallback } from './objectFaker';
 
-export { DataType };
-
 /**
  * dummy-faker: An extension over Faker.js to create loads of fake json objects
  * with customized properties
@@ -52,7 +50,10 @@ export default function dummyFaker(): dummyFakerGenerator {
       }
       throw `${name} has not been registered. register it first`;
     },
-    generate: (name: string, count: number = 1): Promise<any[]> =>
+    generate: <T extends Record<string, DataType>>(
+      name: string,
+      count: number = 1
+    ): Promise<any[]> =>
       new Promise(async (resolve, reject) => {
         try {
           if (_registrations.hasOwnProperty(name)) {
@@ -60,10 +61,10 @@ export default function dummyFaker(): dummyFakerGenerator {
             let i = 0;
             while (i++ < count) {
               let obj: Obj = {};
-              const objFaker = _registrations[name];
-              const props = objFaker.properties as Record<string, DataType>;
+              const objFaker = _registrations[name] as ObjectFaker<T>;
+              const props = objFaker.properties;
               Object.keys(props).forEach((prop: string) => {
-                const fakerCb = objFaker.generators[prop] as fakerCallback;
+                const fakerCb = objFaker.generators[prop];
                 obj[prop] = fakerCb(_th.faker, obj, prop, props[prop]);
               });
               result.push(obj);
@@ -84,4 +85,4 @@ export default function dummyFaker(): dummyFakerGenerator {
   return _init();
 }
 
-export { dummyFaker };
+export { dummyFaker, DataType };
