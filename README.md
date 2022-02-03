@@ -38,7 +38,7 @@ dummy
       .ruleFor('firstName', (faker, u) => faker.name.firstName(u.gender))
       .ruleFor('lastName', (faker, u) => faker.name.lastName(u.gender))
       .ruleFor('name', (faker, u) =>
-        faker.name.findName(u.firstName, u.lastName)
+        faker.name.findName(u.firstName, u.lastName, u.gender)
       )
       .ruleFor('email', (faker, u) =>
         faker.internet.email(u.firstName, u.lastName)

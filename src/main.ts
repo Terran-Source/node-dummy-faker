@@ -58,19 +58,12 @@ export default function dummyFaker(): dummyFakerGenerator {
       new Promise(async (resolve, reject) => {
         try {
           if (_registrations.hasOwnProperty(name)) {
-            let result = [];
-            let i = 0;
-            while (i++ < count) {
-              let obj: Obj = {};
-              const objFaker = _registrations[name] as ObjectFaker<T>;
-              const props = objFaker.properties;
-              Object.keys(props).forEach((prop: string) => {
-                const fakerCb = objFaker.fakerCallbackFor(prop);
-                obj[prop] = fakerCb(_th.faker, obj, prop, props[prop]);
-              });
-              result.push(obj);
-            }
-            resolve(result);
+            const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
+            resolve(
+              Array.from({ length: count }).map<Obj>(() =>
+                objFaker.create(_th.faker)
+              )
+            );
           }
           reject(`${name} has not been registered. register it first`);
         } catch (error) {
