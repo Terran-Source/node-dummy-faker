@@ -17,13 +17,22 @@ export type dummyFakerGenerator = {
   deregister: (name: string) => dummyFakerGenerator;
   customize: <T extends Record<string, DataType>>(
     name: string,
-    callback: (objFaker: ObjectFaker<T>) => void
+    callback: (objFaker: ObjectFaker<T>, customData?: any) => void
   ) => dummyFakerGenerator;
-  generate: <T>(name: string, count?: number) => Promise<T[]>;
+  generate: <T extends Record<string, DataType>>(
+    name: string,
+    count?: number,
+    customData?: any
+  ) => Promise<any[]>;
+  create: <T extends Record<string, DataType>>(
+    name: string,
+    customData?: any
+  ) => Promise<any>;
 };
 
 export default function dummyFaker(generator?: any): dummyFakerGenerator {
   let _registrations: Obj = {};
+  let _customizations: Obj = {};
 
   let _th: dummyFakerGenerator = {
     faker: faker,
@@ -48,19 +57,23 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
       callback: (objFaker: ObjectFaker<T>, customData?: any) => void
     ) => {
       if (_registrations.hasOwnProperty(name)) {
-        callback(_registrations[name]);
+        _customizations[name] = callback;
         return _th;
       }
       throw `${name} has not been registered. register it first`;
     },
     generate: <T extends Record<string, DataType>>(
       name: string,
-      count: number = 1
+      count: number = 1,
+      customData?: any
     ): Promise<any[]> =>
       new Promise(async (resolve, reject) => {
         try {
           if (_registrations.hasOwnProperty(name)) {
             const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
+            if (_customizations.hasOwnProperty(name)) {
+              _customizations[name](objFaker, customData);
+            }
             resolve(
               Array.from({ length: count }).map<Obj>(() =>
                 objFaker.create(_th.generator ?? _th.faker, _th.faker)
@@ -72,6 +85,10 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
           reject(error);
         }
       }),
+    create: async <T extends Record<string, DataType>>(
+      name: string,
+      customData?: any
+    ): Promise<any> => (await _th.generate<T>(name, 1, customData))[0],
   };
 
   const _init = () => {

@@ -16,9 +16,10 @@ dummy
     email: DataType.string,
     obj: DataType.json,
     dob: DataType.date,
+    fixedData: DataType.string,
   })
   //* Step II: (optional) customize fine grained properties
-  .customize('user', (objFaker) => {
+  .customize('user', (objFaker, customData) => {
     objFaker
       .ruleFor('gender', (faker) => faker.name.gender(true))
       .ruleFor('firstName', (faker, u) => faker.name.firstName(u.gender))
@@ -29,11 +30,12 @@ dummy
       .ruleFor('email', (faker, u) =>
         faker.internet.email(u.firstName, u.lastName)
       )
-      .ruleFor('dob', (faker) => faker.date.past(50));
+      .ruleFor('dob', (faker) => faker.date.past(50))
+      .ruleFor('fixedData', () => customData.fixedData);
   });
 
 (async () => {
   //* Step III: Generate as many as needed
-  const users = await dummy.generate('user', 5);
+  const users = await dummy.generate('user', 5, { fixedData: 'Happy 🧐' });
   console.info('users:', users);
 })();
