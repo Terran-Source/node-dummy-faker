@@ -9,6 +9,7 @@ import ObjectFaker, { fakerCallback } from './objectFaker';
 
 export type dummyFakerGenerator = {
   faker: Faker;
+  generator?: any;
   register: <T extends Record<string, DataType>>(
     name: string,
     obj: T
@@ -21,11 +22,12 @@ export type dummyFakerGenerator = {
   generate: <T>(name: string, count?: number) => Promise<T[]>;
 };
 
-export default function dummyFaker(): dummyFakerGenerator {
+export default function dummyFaker(generator?: any): dummyFakerGenerator {
   let _registrations: Obj = {};
 
   let _th: dummyFakerGenerator = {
     faker: faker,
+    generator: generator,
     register: <T extends Record<string, DataType>>(name: string, obj: T) => {
       if (_registrations.hasOwnProperty(name))
         throw (
@@ -61,7 +63,7 @@ export default function dummyFaker(): dummyFakerGenerator {
             const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
             resolve(
               Array.from({ length: count }).map<Obj>(() =>
-                objFaker.create(_th.faker)
+                objFaker.create(_th.generator ?? _th.faker, _th.faker)
               )
             );
           }

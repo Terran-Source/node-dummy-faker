@@ -11,7 +11,9 @@
     "build": "npm run clean && tsc",
     "ts": "node -r ts-node/register",
     "local": "cross-env TS_NODE_COMPILER_OPTIONS='{\"allowJs\": false,\"checkJs\": false}' nodemon examples/example.ts",
+    "local-3rd": "cross-env TS_NODE_COMPILER_OPTIONS='{\"allowJs\": false,\"checkJs\": false}' nodemon examples/example-3rd-party.ts",
     "local-js": "nodemon examples/example.js",
+    "local-js-3rd": "nodemon examples/example-3rd-party.js",
     "clean": "rm -rf lib dist yarn-error.log tsconfig.tsbuildinfo",
     "clean-all": "rm -rf node_modules lib dist yarn.lock yarn-error.log tsconfig.tsbuildinfo"
   },
@@ -50,6 +52,7 @@
     "mocha": "^9.2.0",
     "nodemon": "^2.0.15",
     "readable-stream": "^3.6.0",
+    "suchjs": "^2.1.5",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   },

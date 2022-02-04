@@ -4,13 +4,13 @@ An extension over Faker.js to create loads of fake json objects with customized 
 ### Usage
 First add it as dependency (devDependency for testing)
 ```bash
-$ npm i dummy-faker --save-dev
+$ npm i --save-dev dummy-faker
 ## or
 $ yarn add -D dummy-faker
 ```
 Then start creating dummies
 ```js
-import { dummyFaker, DataType } from '../index'; // Typescript commonjs import
+import { dummyFaker, DataType } from 'dummy-faker'; // Typescript commonjs import
 // or
 const { dummyFaker, DataType } = require('dummy-faker'); // Nodejs module declaration
 
@@ -52,3 +52,4 @@ dummy
   console.info('users:', users);
 })();
 ```
+Look for mor [Examples](examples/)

@@ -2225,6 +2225,11 @@ now-and-later@^2.0.0:
   dependencies:
     once "^1.3.2"
 
+nprintf@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nprintf/-/nprintf-1.0.1.tgz#49dd15a48f273af77156594d21226a79a32f6320"
+  integrity sha512-rb1KDtC4J/JZ3h+xGq/KScQdvR6+sk2Qi84NXlZ0qPVtjZKz0ZgHKrdRSAlEaC6RxIlMFFrVxwme8MshcO2xAw==
+
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
@@ -2696,6 +2701,11 @@ require-main-filename@^1.0.1:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
 
+reregexp@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/reregexp/-/reregexp-1.5.0.tgz#fc3ba9a13b0adfcf8c4f4f0d451b4de56bf2c5b0"
+  integrity sha512-Pr/46uRevly+hPNfYdsIe6XHChPQLh2b10S1YSQB1izD0C1ruyrhp5huX9DD5YpcNLXjV+qxrBYn2q2t4Z2saQ==
+
 resolve-dir@^1.0.0, resolve-dir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/resolve-dir/-/resolve-dir-1.0.1.tgz#79a40644c362be82f26effe739c9bb5382046f43"
@@ -3040,6 +3050,14 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
+
+suchjs@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/suchjs/-/suchjs-2.1.5.tgz#886987fcc8ee9c1d1eb7dfc7a2aaad59e1a3d7e6"
+  integrity sha512-ud+rEqLplNbSsWK4iLD177q3N/pXTKcc8nWUEF8SkHOjVPXweQ0NHZ035sOVQBJyOZkWmS1CXjQ3T7LjLiVX+A==
+  dependencies:
+    nprintf "^1.0.1"
+    reregexp "^1.5.0"
 
 supports-color@8.1.1:
   version "8.1.1"
