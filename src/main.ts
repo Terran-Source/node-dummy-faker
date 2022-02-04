@@ -19,15 +19,15 @@ export type dummyFakerGenerator = {
     name: string,
     callback: (objFaker: ObjectFaker<T>, customData?: any) => void
   ) => dummyFakerGenerator;
+  create: <T extends Record<string, DataType>>(
+    name: string,
+    customData?: any
+  ) => Promise<any>;
   generate: <T extends Record<string, DataType>>(
     name: string,
     count?: number,
     customData?: any
   ) => Promise<any[]>;
-  create: <T extends Record<string, DataType>>(
-    name: string,
-    customData?: any
-  ) => Promise<any>;
 };
 
 export default function dummyFaker(generator?: any): dummyFakerGenerator {
@@ -62,6 +62,10 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
       }
       throw `${name} has not been registered. register it first`;
     },
+    create: async <T extends Record<string, DataType>>(
+      name: string,
+      customData?: any
+    ): Promise<any> => (await _th.generate<T>(name, 1, customData))[0],
     generate: <T extends Record<string, DataType>>(
       name: string,
       count: number = 1,
@@ -87,10 +91,6 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
           reject(error);
         }
       }),
-    create: async <T extends Record<string, DataType>>(
-      name: string,
-      customData?: any
-    ): Promise<any> => (await _th.generate<T>(name, 1, customData))[0],
   };
 
   const _init = () => {
