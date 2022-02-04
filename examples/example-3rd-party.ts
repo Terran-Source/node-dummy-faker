@@ -25,7 +25,7 @@ dummy
       .ruleFor('gender', (Such: TSuch) => Such.as(':string:{5,10}'))
       .ruleFor('firstName', (Such: TSuch) => Such.as(':string:{5,10}'))
       .ruleFor('lastName', (Such: TSuch) => Such.as(':string:{5,10}'))
-      .ruleFor('name', (_, u) => [u.firstName, u.lastName].join(' '))
+      .ruleFor('name', async (_, u) => [u.firstName, u.lastName].join(' '))
       .ruleFor('email', (Such: TSuch) => Such.as(':email'))
       .ruleFor('dob', (Such: TSuch) =>
         Such.as(":date:['-75 years','-5 years']")

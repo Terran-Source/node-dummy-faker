@@ -75,8 +75,10 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
               _customizations[name](objFaker, customData);
             }
             resolve(
-              Array.from({ length: count }).map<Obj>(() =>
-                objFaker.create(_th.generator ?? _th.faker, _th.faker)
+              Promise.all(
+                Array.from({ length: count }).map<Promise<Obj>>(() =>
+                  objFaker.create(_th.generator ?? _th.faker, _th.faker)
+                )
               )
             );
           }

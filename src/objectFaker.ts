@@ -7,7 +7,7 @@ export type fakerCallback = (
   obj?: any,
   key?: string,
   dataType?: DataType
-) => any;
+) => Promise<any>;
 
 export default class ObjectFaker<TObj extends Record<string, DataType>> {
   generators: Record<string, fakerCallback>;
@@ -38,7 +38,7 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
     return this._defaultFaker(_dataType, faker);
   };
 
-  ruleFor<TKey extends keyof TObj>(
+  public ruleFor<TKey extends keyof TObj>(
     property: TKey,
     cb: fakerCallback,
     dataType?: DataType
@@ -53,16 +53,22 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
     return this;
   }
 
-  clone(): ObjectFaker<TObj> {
+  public clone(): ObjectFaker<TObj> {
     return new ObjectFaker(this.properties, this.generators);
   }
 
-  create(generator: Faker | any, faker: Faker): Obj {
+  public async create(generator: Faker | any, faker: Faker): Promise<Obj> {
     let obj: Obj = {};
-    Object.keys(this.properties).forEach((prop: string) => {
-      const fakerCb = this._fakerCallbackFor(prop, faker);
-      obj[prop] = fakerCb(generator, obj, prop, this.properties[prop]);
-    });
+    const props = Object.keys(this.properties);
+    for (const p in props) {
+      const prop = props[p];
+      obj[prop] = await this._fakerCallbackFor(prop, faker)(
+        generator,
+        obj,
+        prop,
+        this.properties[prop]
+      );
+    }
     return obj;
   }
 }
