@@ -17,6 +17,7 @@ const excludedDirectories = [
   ...testDirectories,
   'node_modules',
   'src',
+  'docs',
   'examples',
   'gulpfile.js',
   '.vs',
