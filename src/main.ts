@@ -1,4 +1,5 @@
 import faker, { Faker } from '@faker-js/faker';
+import { Readable, ReadableOptions } from 'stream';
 import DataType from './helper/dataType';
 import ObjectFaker, { fakerCallback } from './objectFaker';
 
@@ -7,18 +8,18 @@ import ObjectFaker, { fakerCallback } from './objectFaker';
  * with customized properties
  */
 
-export type dummyFakerGenerator = {
+export type DummyFakerGenerator = {
   faker: Faker;
   generator?: any;
   register: <T extends Record<string, DataType>>(
     name: string,
     obj: T
-  ) => dummyFakerGenerator;
-  deregister: (name: string) => dummyFakerGenerator;
+  ) => DummyFakerGenerator;
+  deregister: (name: string) => DummyFakerGenerator;
   customize: <T extends Record<string, DataType>>(
     name: string,
     callback: (objFaker: ObjectFaker<T>, customData?: any) => void
-  ) => dummyFakerGenerator;
+  ) => DummyFakerGenerator;
   create: <T extends Record<string, DataType>>(
     name: string,
     customData?: any
@@ -28,13 +29,36 @@ export type dummyFakerGenerator = {
     count?: number,
     customData?: any
   ) => Promise<any[]>;
+  generateStream: <T extends Record<string, DataType>>(
+    name: string,
+    count?: number,
+    customData?: any,
+    options?: DummyStreamOptions
+  ) => Readable;
 };
 
-export default function dummyFaker(generator?: any): dummyFakerGenerator {
+export interface DummyStreamOptions extends ReadableOptions {
+  signal?: AbortSignal;
+}
+
+export default function dummyFaker(generator?: any): DummyFakerGenerator {
   let _registrations: Obj = {};
   let _customizations: Obj = {};
 
-  let _th: dummyFakerGenerator = {
+  const _streamGenerator = async function* <T extends Record<string, DataType>>(
+    objFaker: ObjectFaker<T>,
+    generator: Faker | any,
+    faker: Faker,
+    count: number,
+    signal?: AbortSignal
+  ): AsyncGenerator<any> {
+    let i = 0;
+    while (i++ < count && !signal?.aborted === true) {
+      yield await objFaker.create(generator, faker);
+    }
+  };
+
+  const _th: DummyFakerGenerator = {
     faker: faker,
     generator: generator,
     register: <T extends Record<string, DataType>>(name: string, obj: T) => {
@@ -91,6 +115,30 @@ export default function dummyFaker(generator?: any): dummyFakerGenerator {
           reject(error);
         }
       }),
+    generateStream: <T extends Record<string, DataType>>(
+      name: string,
+      count: number = 1,
+      customData?: any,
+      options?: DummyStreamOptions
+    ): Readable => {
+      if (_registrations.hasOwnProperty(name)) {
+        const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
+        if (_customizations.hasOwnProperty(name)) {
+          _customizations[name](objFaker, customData);
+        }
+        return Readable.from(
+          _streamGenerator(
+            objFaker,
+            _th.generator ?? _th.faker,
+            _th.faker,
+            count,
+            options?.signal
+          ),
+          options
+        );
+      }
+      throw `${name} has not been registered. register it first`;
+    },
   };
 
   const _init = () => {
