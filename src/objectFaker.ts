@@ -59,15 +59,16 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
 
   public async create(generator: Faker | any, faker: Faker): Promise<Obj> {
     let obj: Obj = {};
-    Object.keys(this.properties).forEach(
-      async (prop) =>
-        (obj[prop] = await this._fakerCallbackFor(prop, faker)(
-          generator,
-          obj,
-          prop,
-          this.properties[prop]
-        ))
-    );
+    const props = Object.keys(this.properties);
+    for (const p in props) {
+      const prop = props[p];
+      obj[prop] = await this._fakerCallbackFor(prop, faker)(
+        generator,
+        obj,
+        prop,
+        this.properties[prop]
+      );
+    }
     return obj;
   }
 }
