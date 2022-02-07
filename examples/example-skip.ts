@@ -1,5 +1,4 @@
-const { dummyFaker, DataType } = require('../index');
-const { AbortController } = require('node-abort-controller'); // optional: for Nodejs < v15.4.0
+import { dummyFaker, DataType } from '../index';
 
 const dummy = dummyFaker();
 
@@ -37,23 +36,12 @@ dummy
   });
 
 (async () => {
-  //* Step III: Generate as many as needed (until your system bleeds out)
-  const abortController = new AbortController();
-  const reader = await dummy.generateStream(
+  //* Step III: Generate as many as needed
+  const users = await dummy.generate(
     'user',
-    100000000, // maybe I'm getting greedy 😏
+    5,
     { fixedData: 'Happy 🧐' },
-    { signal: abortController.signal, skip: ['someUnusable'] }
+    { skip: ['someUnusable'] }
   );
-  let counter = 0;
-  let threshold = 500; // that's enough 😎, you prove your point
-  reader
-    .on('data', (user) => {
-      console.info(`user ${counter++}: `, user);
-      if (counter >= threshold) abortController.abort();
-    })
-    .on('end', () => {
-      console.info('completed streaming...');
-    })
-    .on('error', console.error);
+  console.info('users:', users);
 })();

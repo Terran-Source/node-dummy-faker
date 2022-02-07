@@ -28,6 +28,7 @@ dummy
       .ruleFor('name', (faker, u) =>
         faker.name.findName(u.firstName, u.lastName, u.gender)
       )
+      .ruleFor('someUnusable', async () => 'this property will be skipped')
       .ruleFor('email', (faker, u) =>
         faker.internet.email(u.firstName, u.lastName)
       )
@@ -42,7 +43,7 @@ dummy
     'user',
     100000000, // maybe I'm getting greedy 😏
     { fixedData: 'Happy 🧐' },
-    { signal: abortController.signal }
+    { signal: abortController.signal, skip: ['someUnusable'] }
   );
   let counter = 0;
   let threshold = 500; // that's enough 😎, you prove your point

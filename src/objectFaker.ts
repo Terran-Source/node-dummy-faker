@@ -9,6 +9,11 @@ export type fakerCallback = (
   dataType?: DataType
 ) => Promise<any>;
 
+export interface DummyFakerOptions {
+  /// skip the given properties
+  skip?: string[];
+}
+
 export default class ObjectFaker<TObj extends Record<string, DataType>> {
   generators: Record<string, fakerCallback>;
   properties: Record<string, DataType>;
@@ -38,6 +43,17 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
     return this._defaultFaker(_dataType, faker);
   };
 
+  private _skipProperties = (skip?: string[]): typeof this.properties => {
+    if (skip && skip.length > 0) {
+      let result: typeof this.properties = {};
+      Object.keys(this.properties).forEach((key) => {
+        if (!skip.some((sk) => sk === key)) result[key] = this.properties[key];
+      });
+      return result;
+    }
+    return this.properties;
+  };
+
   public ruleFor<TKey extends keyof TObj>(
     property: TKey,
     cb: fakerCallback,
@@ -55,6 +71,13 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
 
   public clone(): ObjectFaker<TObj> {
     return new ObjectFaker(this.properties, this.generators);
+  }
+
+  public checkup(options?: DummyFakerOptions): this {
+    if (options) {
+      this.properties = this._skipProperties(options?.skip);
+    }
+    return this;
   }
 
   public async create(generator: Faker | any, faker: Faker): Promise<Obj> {

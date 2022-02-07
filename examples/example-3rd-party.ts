@@ -26,6 +26,7 @@ dummy
       .ruleFor('firstName', (Such: TSuch) => Such.as(':string:{5,10}'))
       .ruleFor('lastName', (Such: TSuch) => Such.as(':string:{5,10}'))
       .ruleFor('name', async (_, u) => [u.firstName, u.lastName].join(' '))
+      .ruleFor('someUnusable', async () => 'this property will be skipped')
       .ruleFor('email', (Such: TSuch) => Such.as(':email'))
       .ruleFor('dob', (Such: TSuch) =>
         Such.as(":date:['-75 years','-5 years']")
@@ -35,6 +36,11 @@ dummy
 
 (async () => {
   //* Step III: Generate as many as needed
-  const users = await dummy.generate('user', 5, { fixedData: 'Happy 🧐' });
+  const users = await dummy.generate(
+    'user',
+    5,
+    { fixedData: 'Happy 🧐' },
+    { skip: ['someUnusable'] }
+  );
   console.info('users:', users);
 })();

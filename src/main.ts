@@ -1,7 +1,7 @@
 import faker, { Faker } from '@faker-js/faker';
 import { Readable, ReadableOptions } from 'stream';
 import DataType from './helper/dataType';
-import ObjectFaker, { fakerCallback } from './objectFaker';
+import ObjectFaker, { DummyFakerOptions } from './objectFaker';
 
 /**
  * dummy-faker: An extension over Faker.js to create loads of fake json objects
@@ -27,7 +27,8 @@ export type DummyFakerGenerator = {
   generate: <T extends Record<string, DataType>>(
     name: string,
     count?: number,
-    customData?: any
+    customData?: any,
+    options?: DummyGenerateOptions
   ) => Promise<any[]>;
   generateStream: <T extends Record<string, DataType>>(
     name: string,
@@ -37,7 +38,11 @@ export type DummyFakerGenerator = {
   ) => Readable;
 };
 
-export interface DummyStreamOptions extends ReadableOptions {
+export interface DummyGenerateOptions extends DummyFakerOptions {}
+
+export interface DummyStreamOptions
+  extends DummyGenerateOptions,
+    ReadableOptions {
   signal?: AbortSignal;
 }
 
@@ -93,7 +98,8 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
     generate: <T extends Record<string, DataType>>(
       name: string,
       count: number = 1,
-      customData?: any
+      customData?: any,
+      options?: DummyGenerateOptions
     ): Promise<any[]> =>
       new Promise(async (resolve, reject) => {
         try {
@@ -102,6 +108,7 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
             if (_customizations.hasOwnProperty(name)) {
               _customizations[name](objFaker, customData);
             }
+            objFaker.checkup(options);
             resolve(
               Promise.all(
                 Array.from({ length: count }).map<Promise<Obj>>(() =>
@@ -126,6 +133,7 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
         if (_customizations.hasOwnProperty(name)) {
           _customizations[name](objFaker, customData);
         }
+        objFaker.checkup(options);
         return Readable.from(
           _streamGenerator(
             objFaker,

@@ -1,0 +1,21 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Nodejs Program - without debug",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeExecutable": "npx",
+      "cwd": "${workspaceFolder}",
+      "program": "${file}",
+      "args": [
+        "-r ts-node/register",
+        "cross-env TS_NODE_COMPILER_OPTIONS='{\"allowJs\": false,\"checkJs\": false}'"
+      ]
+    }
+  ]
+}
