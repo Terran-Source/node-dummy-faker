@@ -6,7 +6,6 @@
   "scripts": {
     "refresh": "npm run clean-all && yarn install && npm run build",
     "start": "npm run build && node .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prePublish": "npm run build && gulp preBuild",
     "build": "npm run clean && tsc",
     "ts": "node -r ts-node/register",
@@ -17,7 +16,8 @@
     "local-js-3rd": "nodemon examples/example-3rd-party.js",
     "local-js-stream": "nodemon examples/example-stream.js",
     "clean": "rm -rf lib dist yarn-error.log tsconfig.tsbuildinfo",
-    "clean-all": "rm -rf node_modules lib dist yarn.lock yarn-error.log tsconfig.tsbuildinfo"
+    "clean-all": "rm -rf node_modules lib dist yarn.lock yarn-error.log tsconfig.tsbuildinfo",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
