@@ -39,7 +39,7 @@ dummy
 (async () => {
   //* Step III: Generate as many as needed (until your system bleeds out)
   const abortController = new AbortController();
-  const reader = await dummy.generateStream(
+  const reader = dummy.generateStream(
     'user',
     100000000, // maybe I'm getting greedy 😏
     { fixedData: 'Happy 🧐' },
