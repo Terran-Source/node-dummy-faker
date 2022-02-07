@@ -14,7 +14,7 @@ export default class ObjectFaker<TObj extends Record<string, DataType>> {
   properties: Record<string, DataType>;
 
   constructor(obj: TObj, generators: Record<string, fakerCallback> = {}) {
-    this.properties = obj;
+    this.properties = Object.assign({}, obj);
     // Object.keys(obj).forEach((property) => {
     //   this.properties[property] = obj[property];
     // });
