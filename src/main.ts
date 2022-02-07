@@ -63,6 +63,23 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
     }
   };
 
+  const _getObjFaker = <T extends Record<string, DataType>>(
+    _th: DummyFakerGenerator,
+    name: string,
+    customData?: any,
+    options?: DummyGenerateOptions
+  ): ObjectFaker<T> => {
+    if (_registrations.hasOwnProperty(name)) {
+      const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
+      if (_customizations.hasOwnProperty(name)) {
+        _customizations[name](objFaker, customData);
+      }
+      objFaker.checkup(options);
+      return objFaker;
+    }
+    throw `${name} has not been registered. register it first`;
+  };
+
   const _th: DummyFakerGenerator = {
     faker: faker,
     generator: generator,
@@ -103,21 +120,14 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
     ): Promise<any[]> =>
       new Promise(async (resolve, reject) => {
         try {
-          if (_registrations.hasOwnProperty(name)) {
-            const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
-            if (_customizations.hasOwnProperty(name)) {
-              _customizations[name](objFaker, customData);
-            }
-            objFaker.checkup(options);
-            resolve(
-              Promise.all(
-                Array.from({ length: count }).map<Promise<Obj>>(() =>
-                  objFaker.create(_th.generator ?? _th.faker, _th.faker)
-                )
+          const objFaker = _getObjFaker(_th, name, customData, options);
+          resolve(
+            Promise.all(
+              Array.from({ length: count }).map<Promise<Obj>>(() =>
+                objFaker.create(_th.generator ?? _th.faker, _th.faker)
               )
-            );
-          }
-          reject(`${name} has not been registered. register it first`);
+            )
+          );
         } catch (error) {
           reject(error);
         }
@@ -128,24 +138,17 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
       customData?: any,
       options?: DummyStreamOptions
     ): Readable => {
-      if (_registrations.hasOwnProperty(name)) {
-        const objFaker = (_registrations[name] as ObjectFaker<T>).clone();
-        if (_customizations.hasOwnProperty(name)) {
-          _customizations[name](objFaker, customData);
-        }
-        objFaker.checkup(options);
-        return Readable.from(
-          _streamGenerator(
-            objFaker,
-            _th.generator ?? _th.faker,
-            _th.faker,
-            count,
-            options?.signal
-          ),
-          options
-        );
-      }
-      throw `${name} has not been registered. register it first`;
+      const objFaker = _getObjFaker(_th, name, customData, options);
+      return Readable.from(
+        _streamGenerator(
+          objFaker,
+          _th.generator ?? _th.faker,
+          _th.faker,
+          count,
+          options?.signal
+        ),
+        options
+      );
     },
   };
 
