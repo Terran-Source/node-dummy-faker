@@ -1,6 +1,6 @@
 {
   "name": "dummy-faker",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "An extension over Faker.js to create loads of fake json objects with customized properties",
   "main": "index.js",
   "scripts": {
