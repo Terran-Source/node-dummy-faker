@@ -36,6 +36,6 @@ dummy
 
 (async () => {
   //* Step III: Generate as many as needed
-  const users = await dummy.generate('user', 5, { fixedData: 'Happy 🧐' });
+  const users = await dummy.generate('user', 500, { fixedData: 'Happy 🧐' });
   console.info('users:', users);
 })();

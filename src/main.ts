@@ -111,27 +111,21 @@ export default function dummyFaker(generator?: any): DummyFakerGenerator {
     create: async <T extends Record<string, DataType>>(
       name: string,
       customData?: any
-    ): Promise<any> => (await _th.generate<T>(name, 1, customData))[0],
-    generate: <T extends Record<string, DataType>>(
+    ): Promise<any> =>
+      _th.generate<T>(name, 1, customData).then((items) => items[0]),
+    generate: async <T extends Record<string, DataType>>(
       name: string,
       count: number = 1,
       customData?: any,
       options?: DummyGenerateOptions
-    ): Promise<any[]> =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const objFaker = _getObjFaker(_th, name, customData, options);
-          resolve(
-            Promise.all(
-              Array.from({ length: count }).map<Promise<Obj>>(() =>
-                objFaker.create(_th.generator ?? _th.faker, _th.faker)
-              )
-            )
-          );
-        } catch (error) {
-          reject(error);
-        }
-      }),
+    ): Promise<any[]> => {
+      const objFaker = _getObjFaker(_th, name, customData, options);
+      return Promise.all(
+        Array.from({ length: count }).map(() =>
+          objFaker.create(_th.generator ?? _th.faker, _th.faker)
+        )
+      );
+    },
     generateStream: <T extends Record<string, DataType>>(
       name: string,
       count: number = 1,

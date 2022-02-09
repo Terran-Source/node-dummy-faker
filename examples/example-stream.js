@@ -46,7 +46,7 @@ dummy
     { signal: abortController.signal, skip: ['someUnusable'] }
   );
   let counter = 0;
-  let threshold = 500; // that's enough 😎, you prove your point
+  let threshold = 1500; // that's enough 😎, you prove your point
   reader
     .on('data', (user) => {
       console.info(`user ${counter++}: `, user);
